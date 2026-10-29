@@ -1,0 +1,410 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+class CalculatorScreen extends StatefulWidget {
+  const CalculatorScreen({super.key});
+
+  @override
+  State<CalculatorScreen> createState() => _State();
+
+}
+
+class _State extends State<CalculatorScreen> {
+  TextEditingController firstNumController = TextEditingController();
+  TextEditingController secondNumController = TextEditingController();
+  TextEditingController answerController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    firstNumController.dispose();
+    secondNumController.dispose();
+    answerController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: Icon(
+          Icons.calculate_rounded,
+          color: Colors.teal,  
+        ),
+        title: Text("Simple Calculator"),
+      ),
+
+      body: Column(
+
+        children: [
+          // First Input
+          Container(
+            padding: EdgeInsets.all(12),
+            width: 200,
+            height: 120,
+            child: TextField(
+              keyboardType: TextInputType.number,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              controller: firstNumController,
+              style: TextStyle(
+                fontFamily: "Verdana",
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+
+          // Second Input
+          Container(
+            padding: EdgeInsets.all(12),
+            width: 200,
+            height: 120,
+            child: TextField(
+              keyboardType: TextInputType.number,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              controller: secondNumController,
+              style: TextStyle(
+                  fontFamily: "Verdana",
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold
+              ),
+            ),
+          ),
+
+          // Answer Screen
+          Center(
+            child: SizedBox(
+              width: 350,
+              child: TextField(
+                controller: answerController,
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  hintText: "Answer will be displayed here",
+                  hintStyle: TextStyle(
+                    color: Colors.teal,
+                    fontSize: 24,
+                    fontFamily: "Verdana",
+                    fontWeight: FontWeight.bold,
+                  )
+                ),
+                style: TextStyle(
+                  color: Colors.teal,
+                  fontSize: 22,
+                  fontFamily: "Verdana",
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+
+          SizedBox(
+            height: 30,
+          ),
+
+          // Calculations Options
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              spacing: 5,
+              children: [
+                ElevatedButton(
+                    onPressed: (){
+                      setState(() {
+                        answerController.text = add(double.parse(firstNumController.text),double.parse(secondNumController.text)).toString();
+                      });
+                    },
+                    child: Text("+",
+                      style: TextStyle(
+                          color: Colors.white
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.teal
+                    )
+                ),
+
+                ElevatedButton(
+                    onPressed: (){
+                      setState(() {
+                        answerController.text = subtract(double.parse(firstNumController.text),double.parse(secondNumController.text)).toString();
+                      });
+                    },
+                    child: Text("-",
+                      style: TextStyle(
+                          color: Colors.white
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.teal
+                    )
+                ),
+
+                ElevatedButton(
+                    onPressed: (){
+                      setState(() {
+                        answerController.text = multiply(double.parse(firstNumController.text),double.parse(secondNumController.text)).toString();
+                      });
+                    },
+                    child: Text("*",
+                    style: TextStyle(
+                        color: Colors.white
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.teal
+                    )
+                ),
+
+                ElevatedButton(
+                    onPressed: (){
+                      setState(() {
+                        answerController.text = divide(double.parse(firstNumController.text),double.parse(secondNumController.text)).toString();
+                      });
+                    },
+                    child: Text("/",
+                      style: TextStyle(
+                          color: Colors.white
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.teal
+                    )
+                ),
+              ],
+            ),
+          ),
+
+        ],
+
+      ),
+    );
+  }
+
+  double add(double firstNumber,double secondNumber) => firstNumber + secondNumber;
+  double subtract(double firstNumber,double secondNumber) => firstNumber - secondNumber;
+  double multiply(double firstNumber,double secondNumber) => firstNumber * secondNumber;
+  double divide(double firstNumber,double secondNumber){
+    if(secondNumber==0){
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Cannot Devide By ZERO')),
+      );
+      throw Exception("Cannot Devide By ZERO");
+    }else{
+      return firstNumber/secondNumber;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+==============================================================================================
+
+
+
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  TextEditingController nameCont = TextEditingController();
+  TextEditingController emailCont = TextEditingController();
+  TextEditingController phoneCont = TextEditingController();
+  TextEditingController addressCont = TextEditingController();
+  String _data = "";
+
+  @override
+  void dispose() {
+    super.dispose();
+    nameCont.dispose();
+    emailCont.dispose();
+    phoneCont.dispose();
+    addressCont.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: Icon(
+          Icons.input_rounded,
+          color: Colors.teal,
+        ),
+        title: Text("Register"),
+      ),
+      
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 700,
+                height: 400,
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  border: Border.all(color: Colors.teal,width: 2),
+                  borderRadius: BorderRadius.circular(20)
+                ),
+        
+                child: Column(
+                  children: [
+                    // username
+                    TextField(
+                      keyboardType: TextInputType.text,
+                      controller: nameCont,
+                      maxLines: 1,
+                      decoration: InputDecoration(
+                        fillColor: Colors.teal,
+                        filled: true,
+                        prefixIcon: Icon(Icons.person,color: Colors.black,),
+                        hintText: "Enter Username",
+                        hintStyle: TextStyle(color: Colors.grey)
+                      ),
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "Verdana",
+                        fontSize: 16
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+
+                    SizedBox(height: 15,),
+
+                    // email
+                    TextField(
+                      keyboardType: TextInputType.emailAddress,
+                      controller: emailCont,
+                      maxLines: 1,
+                      decoration: InputDecoration(
+                          fillColor: Colors.teal,
+                          filled: true,
+                          prefixIcon: Icon(Icons.email,color: Colors.black,),
+                          hintText: "Enter Email Address",
+                          hintStyle: TextStyle(color: Colors.grey)
+                      ),
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "Verdana",
+                          fontSize: 16
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+
+                    SizedBox(height: 15,),
+
+                    // Mobile Number
+                    TextField(
+                      keyboardType: TextInputType.number,
+                      controller: phoneCont,
+                      maxLines: 1,
+                      maxLength: 10,
+                      decoration: InputDecoration(
+                          fillColor: Colors.teal,
+                          filled: true,
+                          prefixIcon: Icon(Icons.phone,color: Colors.black,),
+                          hintText: "Enter Mobile Number",
+                          hintStyle: TextStyle(color: Colors.grey)
+                      ),
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "Verdana",
+                          fontSize: 16
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+
+                    SizedBox(height: 15,),
+                    
+                    // Address
+                    TextField(
+                      keyboardType: TextInputType.text,
+                      controller: addressCont,
+                      maxLines: 3,
+                      minLines: 3,
+                      decoration: InputDecoration(
+                          fillColor: Colors.teal,
+                          filled: true,
+                          prefixIcon: Icon(Icons.house,color: Colors.black,),
+                          hintText: "Enter Address",
+                          hintStyle: TextStyle(color: Colors.grey)
+                      ),
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "Verdana",
+                          fontSize: 16
+                      ),
+                    ),
+                    
+                    SizedBox(height: 35,),
+                    
+                    ElevatedButton(
+                      onPressed: () {
+                        validateForm();
+                      },
+                      child: Text("Register"),
+                    )
+
+                  ],
+                ),
+        
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void validateForm(){
+    if(nameCont.text.trim().isEmpty || emailCont.text.trim().isEmpty || phoneCont.text.trim().isEmpty || addressCont.text.trim().isEmpty){
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please Enter All Data!"))
+      );
+    }else{
+      _data = "Name : ${nameCont.text} \nEmail : ${emailCont.text} \nMobile : ${phoneCont.text} \nAddress : ${addressCont.text}";
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(_data))
+      );
+    }
+  }
+}
